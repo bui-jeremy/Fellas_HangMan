@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">[Fellas]-HangMan</string>
+    <string name="word1">Pizza</string>
+    <string name="word2">Football</string>
+    <string name="win_res">You win! The word was: %1$s</string>
+    <string name="lose_res">You lose! The word was: %1$s</string>
 </resources>

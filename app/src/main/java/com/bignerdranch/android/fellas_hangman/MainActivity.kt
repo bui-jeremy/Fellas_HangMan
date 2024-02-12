@@ -3,6 +3,7 @@ package com.bignerdranch.android.fellas_hangman
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import org.w3c.dom.Text
@@ -12,6 +13,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var wordGuessesDisplay : TextView
     private lateinit var newGameBtn : Button
     private lateinit var gameResultDisplay : TextView
+    //Image that holds our hangman
+    private lateinit var hangManImages: ImageView
     private val hangmanViewModel: HangmanViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         wordGuessesDisplay = findViewById(R.id.letterGuesses)
         newGameBtn = findViewById(R.id.newGame)
         gameResultDisplay = findViewById(R.id.gameStatus)
+        hangManImages = findViewById(R.id.imageofHangman)
 
         val letterButtons = listOf<Button>(
             findViewById(R.id.buttonA),
@@ -83,6 +87,31 @@ class MainActivity : AppCompatActivity() {
         } else {
             newGameBtn.isEnabled = false
         }
+
+        //Control hangman Image here:
+        val hangManStage = hangmanViewModel.hangManStage()
+        if (hangManStage == 0) {
+            hangManImages.setImageResource(R.drawable.hangman0)
+        }
+        if (hangManStage == 1) {
+            hangManImages.setImageResource(R.drawable.hangman1)
+        }
+        if (hangManStage == 2) {
+            hangManImages.setImageResource(R.drawable.hangman2)
+        }
+        if (hangManStage == 3) {
+            hangManImages.setImageResource(R.drawable.hangman3)
+        }
+        if (hangManStage == 4) {
+            hangManImages.setImageResource(R.drawable.hangman4)
+        }
+        if (hangManStage == 5) {
+            hangManImages.setImageResource(R.drawable.hangman5)
+        }
+        if (hangManStage == 6) {
+            hangManImages.setImageResource(R.drawable.hangman6)
+        }
+
     }
 
 

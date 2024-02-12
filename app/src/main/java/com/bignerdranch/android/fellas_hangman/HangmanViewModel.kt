@@ -39,6 +39,11 @@ class HangmanViewModel(private val savedStateHandle: SavedStateHandle) : ViewMod
         }
     }
 
+    //Will be used to present correct hangman Image
+    fun hangManStage(): Int {
+        return (6- attemptsLeft)
+    }
+
     fun getWordSelectedValue(): String {
         return wordSelected
     }

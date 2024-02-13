@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var gameResultDisplay : TextView
     //Image that holds our hangman
     private lateinit var hangManImages: ImageView
+    private var acceptInput = true
     private val hangmanViewModel: HangmanViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,19 +57,27 @@ class MainActivity : AppCompatActivity() {
 
         letterButtons.forEach { button ->
             button.setOnClickListener {
-                val letter = button.text
-                println(letter.single())
-                hangmanViewModel.guessLetter(letter.single())
-                updateUI()
+
+                if (acceptInput == false) {
+                    println("Block button pressing since the game is over!")
+                } else {
+                    val letter = button.text
+                    println(letter.single())
+                    hangmanViewModel.guessLetter(letter.single())
+                    button.isEnabled = false
+                    updateUI()
+                }
             }
         }
 
-        newGameBtn.isEnabled = false
+        newGameBtn.isEnabled = true
         updateUI()
 
         newGameBtn.setOnClickListener {
             hangmanViewModel.newGame()
+            letterButtons.forEach {button -> button.isEnabled = true}
             gameResultDisplay.text = ""
+            acceptInput = true
             updateUI()
         }
     }
@@ -80,12 +89,15 @@ class MainActivity : AppCompatActivity() {
             gameResultDisplay.text =
                 getString(R.string.win_res, hangmanViewModel.getWordSelectedValue())
             newGameBtn.isEnabled = true
+            acceptInput = false
+
         } else if (hangmanViewModel.isGameLost()) {
             gameResultDisplay.text =
                 getString(R.string.lose_res, hangmanViewModel.getWordSelectedValue())
             newGameBtn.isEnabled = true
+            acceptInput = false
         } else {
-            newGameBtn.isEnabled = false
+            newGameBtn.isEnabled = true
         }
 
         //Control hangman Image here:

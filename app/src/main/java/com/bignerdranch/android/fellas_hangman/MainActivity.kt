@@ -6,14 +6,16 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
+import android.content.res.Configuration
 import org.w3c.dom.Text
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var wordGuessesDisplay : TextView
     private lateinit var newGameBtn : Button
+    private lateinit var hintButtonPress: Button
+    private lateinit var textViewHint: TextView
     private lateinit var gameResultDisplay : TextView
-    //Image that holds our hangman
     private lateinit var hangManImages: ImageView
     private var acceptInput = true
     private val hangmanViewModel: HangmanViewModel by viewModels()
@@ -25,6 +27,14 @@ class MainActivity : AppCompatActivity() {
         newGameBtn = findViewById(R.id.newGame)
         gameResultDisplay = findViewById(R.id.gameStatus)
         hangManImages = findViewById(R.id.imageofHangman)
+
+        val orientation = resources.configuration.orientation
+
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            hintButtonPress = findViewById(R.id.hintButton)
+            textViewHint = findViewById(R.id.textViewHint)
+        }
+
 
         val letterButtons = listOf<Button>(
             findViewById(R.id.buttonA),
@@ -80,6 +90,27 @@ class MainActivity : AppCompatActivity() {
             acceptInput = true
             updateUI()
         }
+
+        //Hint Functionality
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            hintButtonPress.setOnClickListener {
+                val hintNumber = hangmanViewModel.hintNumber()
+
+
+                if (hintNumber == 3) {
+                    //Add Hint
+                    textViewHint.text = (hangmanViewModel.hintOne())
+
+                } else if (hintNumber ==2) {
+                    //Disable Half letters
+
+                }else if (hintNumber ==1) {
+                    //Show all vowels + Remove Vowel options
+
+                }
+                hangmanViewModel.lowerHintNumber()
+            }
+        }
     }
 
     private fun updateUI() {
@@ -122,6 +153,18 @@ class MainActivity : AppCompatActivity() {
         }
         if (hangManStage == 6) {
             hangManImages.setImageResource(R.drawable.hangman6)
+        }
+
+        //Repopulate hints if config is reset
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val hintNumber = hangmanViewModel.hintNumber()
+            if (hintNumber ==3) {
+                textViewHint.text = ""
+            }
+            if (hintNumber <3) {
+                textViewHint.text = (hangmanViewModel.hintOne())
+            }
         }
 
     }

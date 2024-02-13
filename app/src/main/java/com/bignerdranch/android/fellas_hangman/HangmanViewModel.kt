@@ -9,6 +9,7 @@ const val ATTEMPTS_LEFT_KEY = "ATTEMPTS_LEFT_KEY"
 const val HINTS_LEFT_KEY = "HINTS_LEFT_KEY"
 
 class HangmanViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
+
     private var guessedLetters: MutableList<Char> = mutableListOf()
     private var correctlyGuessedLetters: MutableList<Char> = mutableListOf()
     private var currentWordIndex: Int
@@ -41,6 +42,18 @@ class HangmanViewModel(private val savedStateHandle: SavedStateHandle) : ViewMod
         get() = savedStateHandle.get(HINTS_LEFT_KEY) ?: 3
         set(value) = savedStateHandle.set(HINTS_LEFT_KEY, value)
 
+    init {
+        // Retrieve the saved state for the current word index, attempts left, and hints left
+        if (!savedStateHandle.contains(CURRENT_WORD_INDEX_KEY)) {
+            savedStateHandle.set(CURRENT_WORD_INDEX_KEY, 0)
+        }
+        if (!savedStateHandle.contains(ATTEMPTS_LEFT_KEY)) {
+            savedStateHandle.set(ATTEMPTS_LEFT_KEY, maxAttempts)
+        }
+        if (!savedStateHandle.contains(HINTS_LEFT_KEY)) {
+            savedStateHandle.set(HINTS_LEFT_KEY, 3)
+        }
+    }
     fun hintNumber():Int {
         return (hintsLeft)
     }

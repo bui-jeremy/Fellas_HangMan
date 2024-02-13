@@ -97,7 +97,6 @@ class MainActivity : AppCompatActivity() {
             hintButtonPress.setOnClickListener {
                 val hintNumber = hangmanViewModel.hintNumber()
 
-
                 if (hintNumber == 3) {
                     //Add Hint
                     textViewHint.text = (hangmanViewModel.hintOne())
@@ -124,7 +123,7 @@ class MainActivity : AppCompatActivity() {
                     for (i in 0 until countToDisable) {
                         enabledButtonsNotInWord[i].isEnabled = false
                     }
-                }else if (hintNumber == 1 ) {
+                }else if (hintNumber == 1 && hangmanViewModel.getCurrentAttemptsLeft() > 1) {
                     // update all vowels and show them
                     val vowels = listOf("A", "E", "I", "O", "U", "a", "e", "i", "o", "u")
                     for (button in letterButtons) {
@@ -136,9 +135,13 @@ class MainActivity : AppCompatActivity() {
                                 hangmanViewModel.guessLetter(letter.single())
                                 button.isEnabled = false
                             }
-                            updateUI()
+
                         }
                     }
+                    hangmanViewModel.decreaseAttemptsLeft()
+                    updateUI()
+                } else {
+                    textViewHint.text = getString(R.string.hint_error)
                 }
                 hangmanViewModel.lowerHintNumber()
             }

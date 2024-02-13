@@ -81,8 +81,8 @@ class HangmanViewModel(private val savedStateHandle: SavedStateHandle) : ViewMod
         return attemptsLeft
     }
 
-    fun decreaseAttemptsLeft(): Int{
-        return attemptsLeft-1
+    fun decreaseAttemptsLeft(){
+        attemptsLeft--
     }
 
 

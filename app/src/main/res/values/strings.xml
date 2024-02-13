@@ -6,6 +6,7 @@
     <string name="lose_res">You lose! The word was: %1$s</string>
     <string name="hint1">Hint: think of a food</string>
     <string name="hint2">Hint: think of a sport</string>
+    <string name="hint_error">No more hints!</string>
 
 
 </resources>

@@ -9,7 +9,7 @@ const val ATTEMPTS_LEFT_KEY = "ATTEMPTS_LEFT_KEY"
 const val HINTS_LEFT_KEY = "HINTS_LEFT_KEY"
 
 class HangmanViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
-
+    private val letterButtonsStateKeyPrefix = "LETTER_BUTTON_STATE_"
     private var guessedLetters: MutableList<Char> = mutableListOf()
     private var correctlyGuessedLetters: MutableList<Char> = mutableListOf()
     private var currentWordIndex: Int
@@ -43,6 +43,12 @@ class HangmanViewModel(private val savedStateHandle: SavedStateHandle) : ViewMod
         set(value) = savedStateHandle.set(HINTS_LEFT_KEY, value)
 
     init {
+        val letterButtons = ('A'..'Z').map { it.toString() }
+        letterButtons.forEach { letter ->
+            if (!savedStateHandle.contains(getButtonStateKey(letter))) {
+                savedStateHandle.set(getButtonStateKey(letter), false)
+            }
+        }
         // Retrieve the saved state for the current word index, attempts left, and hints left
         if (!savedStateHandle.contains(CURRENT_WORD_INDEX_KEY)) {
             savedStateHandle.set(CURRENT_WORD_INDEX_KEY, 0)
@@ -53,6 +59,18 @@ class HangmanViewModel(private val savedStateHandle: SavedStateHandle) : ViewMod
         if (!savedStateHandle.contains(HINTS_LEFT_KEY)) {
             savedStateHandle.set(HINTS_LEFT_KEY, 3)
         }
+    }
+
+    fun setButtonState(letter: String, isEnabled: Boolean) {
+        savedStateHandle.set(getButtonStateKey(letter), isEnabled)
+    }
+
+    fun getButtonState(letter: String): Boolean {
+        return savedStateHandle.get<Boolean>(getButtonStateKey(letter)) ?: false
+    }
+
+    private fun getButtonStateKey(letter: String): String {
+        return "$letterButtonsStateKeyPrefix$letter"
     }
     fun hintNumber():Int {
         return (hintsLeft)

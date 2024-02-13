@@ -67,15 +67,18 @@ class MainActivity : AppCompatActivity() {
         )
 
         letterButtons.forEach { button ->
-            button.setOnClickListener {
+            val letter = button.text.toString()
+            val buttonState = hangmanViewModel.getButtonState(letter)
+            button.isEnabled = !buttonState
 
+            // Set up click listener for each letter button
+            button.setOnClickListener {
                 if (acceptInput == false) {
                     println("Block button pressing since the game is over!")
                 } else {
-                    val letter = button.text
-                    println(letter.single())
-                    hangmanViewModel.guessLetter(letter.single())
+                    hangmanViewModel.guessLetter(letter[0])
                     button.isEnabled = false
+                    hangmanViewModel.setButtonState(letter, true) // Save button state
                     updateUI()
                 }
             }

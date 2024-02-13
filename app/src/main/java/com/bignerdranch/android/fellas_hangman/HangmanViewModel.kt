@@ -77,6 +77,15 @@ class HangmanViewModel(private val savedStateHandle: SavedStateHandle) : ViewMod
         return wordSelected.map { if (correctlyGuessedLetters.contains(it)) it else '_' }.joinToString(" ")
     }
 
+    fun getCurrentAttemptsLeft(): Int {
+        return attemptsLeft
+    }
+
+    fun decreaseAttemptsLeft(): Int{
+        return attemptsLeft-1
+    }
+
+
     fun isGameWon(): Boolean {
         return wordSelected.all { correctlyGuessedLetters.contains(it) }
     }

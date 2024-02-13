@@ -100,13 +100,44 @@ class MainActivity : AppCompatActivity() {
                 if (hintNumber == 3) {
                     //Add Hint
                     textViewHint.text = (hangmanViewModel.hintOne())
+                } else if (hintNumber == 2) {
+                    // get rid of half the letters not in word
+                    val currentWordUpper = hangmanViewModel.getWordSelectedValue().uppercase()
+                    val enabledButtonsNotInWord = mutableListOf<Button>()
 
-                } else if (hintNumber ==2) {
-                    //Disable Half letters
+                    for (button in letterButtons) {
+                        val letter = button.text.toString().uppercase()
+                        if (button.isEnabled && !currentWordUpper.contains(letter)) {
+                            enabledButtonsNotInWord.add(button)
+                        }
+                    }
 
-                }else if (hintNumber ==1) {
-                    //Show all vowels + Remove Vowel options
-
+                    // shuffle the list manually
+                    for (i in enabledButtonsNotInWord.indices) {
+                        val randomIndex = (enabledButtonsNotInWord.indices).random()
+                        val temp = enabledButtonsNotInWord[i]
+                        enabledButtonsNotInWord[i] = enabledButtonsNotInWord[randomIndex]
+                        enabledButtonsNotInWord[randomIndex] = temp
+                    }
+                    val countToDisable = enabledButtonsNotInWord.size / 2
+                    for (i in 0 until countToDisable) {
+                        enabledButtonsNotInWord[i].isEnabled = false
+                    }
+                }else if (hintNumber == 1 ) {
+                    // update all vowels and show them
+                    val vowels = listOf("A", "E", "I", "O", "U", "a", "e", "i", "o", "u")
+                    for (button in letterButtons) {
+                        if (button.text.toString() in vowels) {
+                            val currentWordUpper = hangmanViewModel.getWordSelectedValue().uppercase()
+                            val letter = button.text
+                            if (button.isEnabled && currentWordUpper.contains(letter)) {
+                                println(letter.single())
+                                hangmanViewModel.guessLetter(letter.single())
+                                button.isEnabled = false
+                            }
+                            updateUI()
+                        }
+                    }
                 }
                 hangmanViewModel.lowerHintNumber()
             }

@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import android.content.res.Configuration
 import org.w3c.dom.Text
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var wordGuessesDisplay : TextView

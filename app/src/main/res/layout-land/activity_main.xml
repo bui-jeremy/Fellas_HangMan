@@ -8,7 +8,7 @@
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView"
-        android:layout_width="225dp"
+        android:layout_width="500dp"
         android:layout_height="74dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,8 +55,8 @@
 
             <Button
                 android:id="@+id/buttonD"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="0dp"
+                android:layout_height="81dp"
                 android:background="@drawable/square_button"
                 android:gravity="center"
                 android:text="D"
